@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+>
+
+	<bean id="configuration" class="com.paolo.convertini.model.Configuration">
+		<property name="dir" value="/Users/pconvertini/Downloads/firmapdf/" />
+		<property name="metodo" value="bustaPaga" />
+		<property name="hPosition" value="500" />
+		<property name="vPosition" value="825" />
+	</bean>
+
+</beans>
