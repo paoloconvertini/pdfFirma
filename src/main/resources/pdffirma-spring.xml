@@ -5,7 +5,7 @@
 
 	<bean id="configuration" class="com.paolo.convertini.model.Configuration">
 		<property name="dir" value="/Users/pconvertini/Downloads/firmapdf/" />
-		<property name="metodo" value="bustaPaga" />
+		<property name="metodo" value="bp" />
 		<property name="hPosition" value="500" />
 		<property name="vPosition" value="825" />
 	</bean>

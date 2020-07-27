@@ -32,7 +32,7 @@ public class BatchPdfFirma implements ApplicationContextAware {
         long startBatch = System.currentTimeMillis();
         try {
             log.debug("Inizio esecuzione pdfFirma");
-            if(StringUtils.equals(metodo, "bustaPaga")){
+            if(StringUtils.equals(metodo, "bp")){
                 pdfHandler.firmaBustaPaga();
             }
         } catch (Exception e) {
