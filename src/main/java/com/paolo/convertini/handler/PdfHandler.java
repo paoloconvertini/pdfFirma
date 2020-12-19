@@ -1,5 +1,6 @@
 package com.paolo.convertini.handler;
 
+import com.paolo.convertini.PdfFirmaMain;
 import com.paolo.convertini.model.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -13,6 +14,8 @@ import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 
 public class PdfHandler {
 
@@ -41,7 +44,8 @@ public class PdfHandler {
                     PDPage page = pdf.getPage(pages.getCount() - 1);
                     float upperRightY = page.getCropBox().getUpperRightY();
                     float lowerLeftX = page.getCropBox().getLowerLeftX();
-                    PDImageXObject pdImage = PDImageXObject.createFromFile(cfg.getDir() + "firma_dora.png", pdf);
+                    String path = PdfFirmaMain.class.getResource("/firma_dora.png").toURI().getPath();
+                    PDImageXObject pdImage = PDImageXObject.createFromFile(path, pdf);
                     PDPageContentStream contentStream = new PDPageContentStream(pdf, page, PDPageContentStream.AppendMode.APPEND, true);
                     contentStream.drawImage(pdImage, (lowerLeftX + cfg.gethPosition()), (upperRightY - cfg.getvPosition()), 70, 20);
                     contentStream.close();
