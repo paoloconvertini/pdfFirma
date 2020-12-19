@@ -1,6 +1,8 @@
 package com.paolo.convertini.handler;
 
 import com.paolo.convertini.model.Configuration;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,26 +29,31 @@ public class PdfHandler {
             log.info("Running pdfWrite");
             File folderToCheck = new File(cfg.getDir() + "da_firmare");
             File[] files = folderToCheck.listFiles();
-            if (files != null && files.length == 1) {
-                File file = files[0];
-                String fileName = file.getName();
-                PDDocument pdf = PDDocument.load(file);
-                PDPageTree pages = pdf.getDocumentCatalog().getPages();
-                PDPage page = pdf.getPage(pages.getCount() - 1);
-                float upperRightY = page.getCropBox().getUpperRightY();
-                float lowerLeftX = page.getCropBox().getLowerLeftX();
-                PDImageXObject pdImage = PDImageXObject.createFromFile(cfg.getDir() + "firma_dora.png", pdf);
-                PDPageContentStream contentStream = new PDPageContentStream(pdf, page, PDPageContentStream.AppendMode.APPEND, true);
-                contentStream.drawImage(pdImage, (lowerLeftX + cfg.gethPosition()), (upperRightY - cfg.getvPosition()), 70, 20);
-                contentStream.close();
-                String name = StringUtils.substringBefore(fileName,".pdf");
-                pdf.save(cfg.getDir() + "firmati/" + name + "_firmato.pdf");
-                pdf.close();
-                log.info(fileName + " creato correttamente.");
-                if (file.delete()) {
-                    log.debug("File temporaneo rimosso");
+            if (files != null && files.length > 0) {
+                for (File file : files) {
+                    String fileName = file.getName();
+                    if(!StringUtils.equals("pdf", FilenameUtils.getExtension(fileName))){
+                        log.error("Il file " + fileName + " non è di tipo pdf");
+                        continue;
+                    }
+                    PDDocument pdf = PDDocument.load(file);
+                    PDPageTree pages = pdf.getDocumentCatalog().getPages();
+                    PDPage page = pdf.getPage(pages.getCount() - 1);
+                    float upperRightY = page.getCropBox().getUpperRightY();
+                    float lowerLeftX = page.getCropBox().getLowerLeftX();
+                    PDImageXObject pdImage = PDImageXObject.createFromFile(cfg.getDir() + "firma_dora.png", pdf);
+                    PDPageContentStream contentStream = new PDPageContentStream(pdf, page, PDPageContentStream.AppendMode.APPEND, true);
+                    contentStream.drawImage(pdImage, (lowerLeftX + cfg.gethPosition()), (upperRightY - cfg.getvPosition()), 70, 20);
+                    contentStream.close();
+                    String name = StringUtils.substringBefore(fileName, ".pdf");
+                    pdf.save(cfg.getDir() + "firmati/" + name + "_firmato.pdf");
+                    pdf.close();
+                    log.info(fileName + " creato correttamente.");
+                    if (file.delete()) {
+                        log.debug("File temporaneo rimosso");
+                    }
+                    log.info("Metodo pdfRead terminato correttamente");
                 }
-                log.info("Metodo pdfRead terminato correttamente");
             } else {
                 log.error("Errore nel controllo pdf");
             }
