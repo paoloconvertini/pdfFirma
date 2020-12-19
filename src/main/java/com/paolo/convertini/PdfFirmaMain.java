@@ -19,7 +19,6 @@ public class PdfFirmaMain {
         JFrame frame = new JFrame("Firma pdf");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800,400);//400 width and 500 height
-        int width = frame.getWidth();
         JButton btnFirma = new JButton("Firma");
         btnFirma.setBounds(420,150,100, 40);//x axis, y axis, width, height
         frame.add(btnFirma);//adding button in JFrame
